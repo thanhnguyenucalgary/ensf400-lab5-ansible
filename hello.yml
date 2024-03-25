@@ -75,7 +75,7 @@
         state: link
       notify: Restart Nginx
   handlers:
-    - name: Restart Nginx
+    - name: Restart Nginx to apply changes
       service:
         name: nginx
         state: restarted

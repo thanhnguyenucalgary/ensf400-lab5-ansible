@@ -1,3 +1,29 @@
+# version: "3.7"
+
+# services:
+#   managedhost-app-1:
+#     build: 
+#       context: managed-host/alpine/app1
+#     restart: unless-stopped
+#     network_mode: "bridge"
+#     environment:
+#       - SSH_ENABLE_ROOT=true
+#   managedhost-app-2:
+#     build: 
+#       context: managed-host/alpine/app2
+#     restart: unless-stopped
+#     network_mode: "bridge"
+#     environment:
+#       - SSH_ENABLE_ROOT=true
+#   managedhost-app-3:
+#     build: 
+#       context: managed-host/alpine/app3
+#     restart: unless-stopped
+#     network_mode: "bridge"
+#     environment:
+#       - SSH_ENABLE_ROOT=true
+
+
 version: "3.7"
 
 services:
@@ -8,6 +34,13 @@ services:
     network_mode: "bridge"
     environment:
       - SSH_ENABLE_ROOT=true
+    ports:
+      - "3000:3000"  # Map Container port 3000 to Host port 3000 (Web)
+      - "2223:2223"  # Map Container port 2223 to Host port 2223 (SSH)
+    volumes:
+      - ./secrets/id_rsa_container.pub:/root/.ssh/authorized_keys
+        # Mount public key from host
+
   managedhost-app-2:
     build: 
       context: managed-host/alpine/app2
@@ -15,6 +48,12 @@ services:
     network_mode: "bridge"
     environment:
       - SSH_ENABLE_ROOT=true
+    ports:
+      - "3001:3000"  # Map Container port 3000 to Host port 3001 (Web)
+      - "2224:2224"  # Map Container port 2223 to Host port 2224 (SSH)
+    volumes:
+      - ./secrets/id_rsa_container.pub:/root/.ssh/authorized_keys  # Mount public key from host
+
   managedhost-app-3:
     build: 
       context: managed-host/alpine/app3
@@ -22,3 +61,9 @@ services:
     network_mode: "bridge"
     environment:
       - SSH_ENABLE_ROOT=true
+    ports:
+      - "3002:3000"  # Map Container port 3000 to Host port 3002 (Web)
+      - "2225:2225"  # Map Container port 2223 to Host port 2225 (SSH)
+    volumes:
+      - ./secrets/id_rsa_container.pub:/root/.ssh/authorized_keys  # Mount public key from host
+
